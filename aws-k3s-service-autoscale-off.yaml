@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: szdoga3
+  namespace: default
+  annotations:
+    networking.knative.dev/request-timeout: "600s"
+    networking.knative.dev/idle-timeout: "600s"
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "1"
+        serving.knative.dev/timeoutSeconds: "600"
+    spec:
+      containers:
+        - image: docker.io/stephyng/szdoga3:latest
