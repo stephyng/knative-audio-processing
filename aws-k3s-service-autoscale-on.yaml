@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - image: stephyng/knative-audio-processing_test5-debug2:latest
+        - image: stephyng/knative-audio-processing-monolithic:latest
           ports:
             - containerPort: 8080
           env:
