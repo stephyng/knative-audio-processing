@@ -942,7 +942,7 @@
                               "kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-controller.yaml\n",
                               "kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-broker.yaml\n",
                               "kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-post-install.yaml\n",
-                              "kubectl -n knative-serving patch cm config-features --type merge -p '{"data":{"kubernetes.podspec-nodeselector":"enabled"}}'\n",
+                              "kubectl -n knative-serving patch cm config-features --type merge -p '{\"data\":{\"kubernetes.podspec-nodeselector\":\"enabled\"}}'\n",
                               "cd home/ubuntu\n",
                               "git clone https://github.com/stephyng/knative-audio-processing.git\n",
                               "sudo apt update && sudo apt install -y wget unzip mc\n",
