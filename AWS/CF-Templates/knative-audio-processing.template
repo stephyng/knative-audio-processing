@@ -930,6 +930,13 @@
                               "cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/kubeconfig.yaml\n",
                               "chown ubuntu:ubuntu /home/ubuntu/kubeconfig.yaml\n",
                               "sudo chmod 644 /etc/rancher/k3s/k3s.yaml\n",
+                              "cd /tmp\n",
+                              "wget https://get.pulumi.com/releases/sdk/pulumi-v3.206.0-linux-x64.tar.gz\n",
+                              "tar -xzvf pulumi-v3.206.0-linux-x64.tar.gz\n",
+                              "PULUMI_FOLDER=$(find /tmp -maxdepth 1 -type d -name \"pulumi*\" | head -n 1)\n",
+                              "mv $PULUMI_FOLDER/pulumi /usr/local/bin/\n",
+                              "rm pulumi-v3.206.0-linux-x64.tar.gz\n",
+                              "rm -rf $PULUMI_FOLDER\n",
                               "kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-crds.yaml\n",
                               "kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml\n",
                               "kubectl apply -f https://github.com/knative-extensions/net-kourier/releases/download/knative-v1.14.0/kourier.yaml\n",
@@ -943,14 +950,15 @@
                               "kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-broker.yaml\n",
                               "kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-post-install.yaml\n",
                               "kubectl -n knative-serving patch cm config-features --type merge -p '{\"data\":{\"kubernetes.podspec-nodeselector\":\"enabled\"}}'\n",
-                              "cd home/ubuntu\n",
+                              "cd /home/ubuntu\n",
                               "git clone https://github.com/stephyng/knative-audio-processing.git\n",
                               "sudo apt update && sudo apt install -y wget unzip mc\n",
                               "sudo apt remove mc -y\n",
                               "wget https://dl.min.io/client/mc/release/linux-amd64/mc -O mc\n",
                               "sudo chmod +x mc\n",
                               "sudo mv mc /usr/local/bin/\n",
-                              "sudo ln -s /usr/local/bin/mc /usr/bin/mc\n"
+                              "sudo ln -s /usr/local/bin/mc /usr/bin/mc\n",
+                              "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml\n"
                 ]]}}
              },
              "DependsOn": [
