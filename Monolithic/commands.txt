@@ -1,0 +1,31 @@
+# Command list for the Monolithic Application
+
+# First deploy the MinIO services
+kubectl apply -f ~/knative-audio-processing/Monolithic/Minio/minio-deployment.yaml
+
+# Deploy the Monolitchic application itself
+# (you can choose whether or not you want to have the knative auto-scale to zero function enabled)
+kubectl apply -f ~/knative-audio-processing/Monolithic/Deployments/aws-k3s-service-autoscale-off.yaml
+# or
+kubectl apply -f ~/knative-audio-processing/Monolithic/Deployments/aws-k3s-service-autoscale-on.yaml
+
+# Wait for all pods and triggers to fully load and achieve working status
+
+# login in your browser to minio
+# http://<IPv4>:30912
+
+mc alias set local http://127.0.0.1:30911 minioadmin minioadmin
+
+mc mb local/knative-audio-processor
+
+mc admin config set local notify_webhook:knative endpoint="http://knative-audio-processor.default.svc.cluster.local/minio-event"
+
+mc admin service restart local
+
+mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
+
+# UPLOAD a .mp3 file to be processed or use:
+mc cp ~/knative-audio-processing/_MP3-files/tts.mp3 local/knative-audio-processor/
+
+# If you want to check out the logs of a given microservice pod use:
+kubectl logs -l serving.knative.dev/service=knative-audio-processor -c user-container --tail=100
