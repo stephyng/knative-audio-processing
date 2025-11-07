@@ -51,5 +51,5 @@ echo "✅ A knative-audio-processor pod fut (Running)."
 kubectl wait --for=condition=Ready pod -l serving.knative.dev/service=knative-audio-processor
 echo "✅ A knative-audio-processor pod készen áll."
 
-echo "🎉 **Telepítés befejezve!** Minden komponens elvileg fut a minikube klaszterben."
+echo "🎉 **Telepítés befejezve!**"
 echo "---"

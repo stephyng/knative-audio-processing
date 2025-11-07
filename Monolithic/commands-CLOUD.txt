@@ -1,4 +1,4 @@
-# Command list for the Monolithic Application
+# Command list for the Monolithic Application (Cloud - AWS EC2)
 
 # First deploy the MinIO services
 kubectl apply -f ~/knative-audio-processing/Monolithic/Minio/minio-deployment.yaml
@@ -12,7 +12,7 @@ kubectl apply -f ~/knative-audio-processing/Monolithic/Deployments/aws-k3s-servi
 # Wait for all pods and triggers to fully load and achieve working status
 
 # Login in your browser to minio
-# http://<IPv4>:30912
+# http://<EC2_IPv4>:30912
 
 # Login to the MinIO Client from your console
 mc alias set local http://127.0.0.1:30911 minioadmin minioadmin

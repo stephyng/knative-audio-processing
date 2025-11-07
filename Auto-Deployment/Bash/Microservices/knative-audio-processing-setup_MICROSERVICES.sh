@@ -18,6 +18,7 @@ sleep 5
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml
 sleep 5
 echo "✅ CRD-k és Core telepítve."
+echo "---"
 
 # Kourier Ingress konfigurálása
 echo "🟡 Kourier telepítése és konfigurálása..."
@@ -61,7 +62,9 @@ echo "---"
 # Microservice-ek telepítése
 echo "🟡 Microservice-ek telepítése..."
 kubectl apply -f ./Microservices/Local/Minio/minio-deployment.yaml
+sleep 3
 kubectl apply -f ./Microservices/Local/Deployments/kafka-broker-receiver-patch.yaml
+sleep 5
 
 # -----------------------------
 kubectl apply -f ./Microservices/Local/Deployments/minio-processor-deployment.yaml
@@ -121,8 +124,8 @@ echo "✅ A knative-audio-merger pod készen áll."
 
 # -----------------------------
 kubectl apply -f ./Microservices/Local/Deployments/eventing-components-deployment.yaml
-echo "✅ Microservice-ek telepítve az új Local útvonalakról."
+echo "✅ Microservice-ek telepítve és beállítva."
 echo "---"
 
-echo "🎉 **Telepítés befejezve!** Minden komponens elvileg fut a minikube klaszterben."
+echo "🎉 **Telepítés befejezve!**"
 echo "---"
