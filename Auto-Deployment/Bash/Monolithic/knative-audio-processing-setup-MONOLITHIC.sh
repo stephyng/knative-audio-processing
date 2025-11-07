@@ -29,7 +29,12 @@ echo "✅ Kourier beállítva."
 echo "---"
 sleep 5
 
+echo "🟡 MinIO telepítése"
+kubectl apply -f ./Monolithic/Minio/minio-deployment.yaml
+sleep 5
+
 # -----------------------------
+echo "🟡 Alkalmazás telepítése"
 kubectl apply -f ./Monolithic/Deployments/aws-k3s-service-autoscale-off.yaml
 echo "🕒 Várakozás, amíg a knative-audio-processor pod létrejön és Running állapotba kerül..."
 while [[ -z $(kubectl get pods -l serving.knative.dev/service=knative-audio-processor -o jsonpath='{.items[0].metadata.name}' 2>/dev/null) ]]; do
