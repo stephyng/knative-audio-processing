@@ -28,7 +28,7 @@ mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --even
 
 # UPLOAD a .mp3 file to be processed or use:
 # (Or use your browser)
-mc cp ./_MP3-files/tts.mp3 local/knative-audio-processor/
+mc cp ./MP3-files/tts.mp3 local/knative-audio-processor/
 
 # Check the output of the application
 mc ls local/knative-audio-processor/results/tts
