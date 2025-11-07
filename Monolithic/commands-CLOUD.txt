@@ -1,4 +1,4 @@
-# Command list for the Microsevice based Application (Cloud - AWS EC2)
+# Command list for the Monolithic Application (Cloud - AWS EC2)
 
 # Create a working directory in which you are going to deploy Pulumi
 mkdir pulumi
