@@ -5,21 +5,6 @@ set -e
 echo "🚀 Knative audio-feldolgozó környezet beállítása (Frissített verzió)..."
 echo "---"
 
-# Git klónozása
-REPO_DIR="knative-audio-processing"
-REPO_URL="https://github.com/stephyng/${REPO_DIR}.git"
-
-if [ -d "$REPO_DIR" ]; then
-    echo "⚠️ A(z) ${REPO_DIR} könyvtár már létezik. Kihagyom a klónozást és belépek."
-    cd "$REPO_DIR" || { echo "❌ Nem sikerült belépni a könyvtárba."; exit 1; }
-else
-    echo "🟡 A(z) ${REPO_DIR} klónozása..."
-    git clone "$REPO_URL" || { echo "❌ Hiba a klónozáskor."; exit 1; }
-    cd "$REPO_DIR" || { echo "❌ Nem sikerült belépni a könyvtárba."; exit 1; }
-    echo "✅ Klónozás sikeres."
-fi
-echo "---"
-
 # Minikube indítása
 echo "🟡 Minikube indítása..."
 minikube start || { echo "❌ Hiba a minikube indításakor."; exit 1; }

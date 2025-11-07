@@ -1,0 +1,9 @@
+# Command list for the Monolithic Application (Local - Minikube)
+
+# Firt clone the Git Repo to a directory
+git clone https://github.com/stephyng/knative-audio-processing.git
+
+# Change your directory
+cd knative-audio-processing/
+
+bash script
