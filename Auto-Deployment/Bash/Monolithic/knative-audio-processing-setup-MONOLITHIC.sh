@@ -12,12 +12,13 @@ echo "✅ Minikube elindult."
 echo "---"
 
 # Knative Serving telepítése
-echo "🟡 Knative Serving (v1.14.0) telepítése..."
+echo "🟡 Knative Serving telepítése..."
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-crds.yaml
 sleep 5
 kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml
 sleep 5
 echo "✅ CRD-k és Core telepítve."
+echo "---"
 
 # Kourier Ingress konfigurálása
 echo "🟡 Kourier telepítése és konfigurálása..."
@@ -29,8 +30,10 @@ echo "✅ Kourier beállítva."
 echo "---"
 sleep 5
 
-echo "🟡 MinIO telepítése"
+echo "🟡 MinIO telepítése..."
 kubectl apply -f ./Monolithic/Minio/minio-deployment.yaml
+echo "✅ MinIO telepítve."
+echo "---"
 sleep 5
 
 # -----------------------------
@@ -45,7 +48,7 @@ while [[ $(kubectl get pod $POD_NAME -o jsonpath='{.status.phase}') != "Running"
   sleep 3
 done
 echo "✅ A knative-audio-processor pod fut (Running)."
-kubectl wait --for=condition=Ready pod -l serving.knative.dev/service=knative-minio-processor
+kubectl wait --for=condition=Ready pod -l serving.knative.dev/service=knative-audio-processor
 echo "✅ A knative-audio-processor pod készen áll."
 
 echo "🎉 **Telepítés befejezve!** Minden komponens elvileg fut a minikube klaszterben."
