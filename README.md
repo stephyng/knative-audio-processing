@@ -1,2 +1,2 @@
-Németh Gergő Szakgolgozat munka\n
+Németh Gergő Szakgolgozat munka  
 BME VIK - 2025/26/1
