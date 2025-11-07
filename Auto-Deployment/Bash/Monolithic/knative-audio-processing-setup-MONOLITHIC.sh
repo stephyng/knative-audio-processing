@@ -28,41 +28,6 @@ kubectl patch configmap/config-domain -n knative-serving --type merge -p '{"data
 echo "✅ Kourier beállítva."
 echo "---"
 
-# Knative Eventing telepítése
-echo "🟡 Knative Eventing (v1.19.7) telepítése..."
-kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.19.7/eventing-crds.yaml
-sleep 5
-kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.19.7/eventing-core.yaml
-sleep 5
-kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.19.7/in-memory-channel.yaml
-sleep 5
-kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.19.7/mt-channel-broker.yaml
-sleep 5
-echo "✅ Eventing telepítve."
-echo "---"
-
-# Knative Kafka Broker telepítése
-echo "🟡 Knative Kafka Broker (v1.19.8) telepítése..."
-kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-controller.yaml
-sleep 5
-kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-broker.yaml
-sleep 5
-kubectl apply -f https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.19.8/eventing-kafka-post-install.yaml
-sleep 5
-echo "✅ Kafka Broker telepítve."
-echo "---"
-
-# Nodeselector engedélyezése
-echo "🟡 Nodeselector engedélyezése a Knative Serving-ben..."
-kubectl -n knative-serving patch cm config-features --type merge -p '{"data":{"kubernetes.podspec-nodeselector":"enabled"}}'
-echo "✅ Nodeselector engedélyezve."
-echo "---"
-
-# Service-ek telepítése
-echo "🟡 Microservice-ek telepítése..."
-kubectl apply -f ./Monolithic/Minio/minio-deployment.yaml
-kubectl apply -f ./Monolithic/Deployments/kafka-broker-receiver-patch.yaml
-
 # -----------------------------
 kubectl apply -f ./Monolithic/Deployments/aws-k3s-service-autoscale-off.yaml
 echo "🕒 Várakozás, amíg a knative-audio-processor pod létrejön és Running állapotba kerül..."
