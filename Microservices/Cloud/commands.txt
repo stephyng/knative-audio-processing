@@ -1,3 +1,5 @@
+# Command list for the Microsevice based Application (Cloud - AWS EC2)
+
 # Create a working directory in which you are going to deploy Pulumi
 mkdir pulumi
 cd pulumi
@@ -7,32 +9,29 @@ pulumi new kubernetes-python
 # Paste your Pulumi Access Token or login in your browser to Pulumi
 
 # Fill out the details of your project
-# Name: knative-audio-processing-final-test
+# Name: knative-audio-processing-aws-ec2
 # Desc.: A Knative audio processing application
-# Dev - TODO
+# Dev - dev
 # Choose "yes" when prompted to do so
 
 # Wait for all pods and triggers to fully load and achieve working status
 
-kubectl get svc -n minio
+# Login in your browser to minio
+# http://<EC2_IPv4>:30912
 
-# login in your browser to minio
-# kubectl get svc -n minio --> … 9000:<>/TCP,9001:<>/TCP
-# http://<Public IP>:32520
-# - user: minioadmin
-# - passwd: minioadmin
+# Login to the MinIO Client from your console
+mc alias set local http://127.0.0.1:30911 minioadmin minioadmin
 
-mc alias set local http://127.0.0.1:<> minioadmin minioadmin
-
+# Create your bucket
 mc mb local/knative-audio-processor
 
+# Configure a service waiting for an upload to the MinIO Bucket
 mc admin config set local notify_webhook:knative endpoint="http://knative-minio-processor.default.svc.cluster.local/minio-event"
-
 mc admin service restart local
-
 mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
 
 # UPLOAD a .mp3 file to be processed or use:
+# (Or use your browser)
 mc cp ~/knative-audio-processing/_MP3-files/tts.mp3 local/knative-audio-processor/
 
 # If you want to check out the logs of a given microservice pod use:
