@@ -22,7 +22,7 @@ mc alias set local http://127.0.0.1:9000 minioadmin minioadmin
 mc mb local/knative-audio-processor
 
 # Configure a service waiting for an upload to the MinIO Bucket
-mc admin config set local notify_webhook:knative endpoint="http://knative-audio-processor.default.svc.cluster.local/minio-event"
+mc admin config set local notify_webhook:knative endpoint="http://knative-minio-processor.default.svc.cluster.local/minio-event"
 mc admin service restart local
 mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
 
@@ -34,4 +34,4 @@ mc cp ./MP3-files/tts.mp3 local/knative-audio-processor/
 mc ls local/knative-audio-processor/results/tts
 
 # If you want to check out the logs of a given microservice pod use:
-kubectl logs -l serving.knative.dev/service=knative-audio-processor -c user-container --tail=100
+kubectl logs -l serving.knative.dev/service=knative-<Pod name> -c user-container --tail=100

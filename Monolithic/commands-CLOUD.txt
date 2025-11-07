@@ -1,13 +1,25 @@
-# Command list for the Monolithic Application (Cloud - AWS EC2)
+# Command list for the Microsevice based Application (Cloud - AWS EC2)
 
-# First deploy the MinIO services
-kubectl apply -f ~/knative-audio-processing/Monolithic/Minio/minio-deployment.yaml
+# Create a working directory in which you are going to deploy Pulumi
+mkdir pulumi
+cd pulumi
 
-# Deploy the Monolitchic application itself
-# (you can choose whether or not you want to have the knative auto-scale to zero function enabled)
-kubectl apply -f ~/knative-audio-processing/Monolithic/Deployments/aws-k3s-service-autoscale-off.yaml
-# or
-kubectl apply -f ~/knative-audio-processing/Monolithic/Deployments/aws-k3s-service-autoscale-on.yaml
+pulumi new kubernetes-python
+
+# Paste your Pulumi Access Token or login in your browser to Pulumi
+
+# Fill out the details of your project
+# Name: knative-audio-processing-aws-ec2
+# Desc.: A Knative audio processing application
+# Desired stack name: dev
+
+# Copy your __main__.py file from the Git repo to the pulumi project
+sudo cp ~/knative-audio-processing/Auto-Deployment/Pulumi/Monolithic/__main__.py __main__.py
+
+# Start creating your pulumi project
+pulumi up 
+
+# Choose "yes" when prompted to do so
 
 # Wait for all pods and triggers to fully load and achieve working status
 
@@ -27,7 +39,7 @@ mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --even
 
 # UPLOAD a .mp3 file to be processed or use:
 # (Or use your browser)
-mc cp ~/knative-audio-processing/_MP3-files/tts.mp3 local/knative-audio-processor/
+mc cp ~/knative-audio-processing/MP3-files/tts.mp3 local/knative-audio-processor/
 
 # If you want to check out the logs of a given microservice pod use:
 kubectl logs -l serving.knative.dev/service=knative-audio-processor -c user-container --tail=100

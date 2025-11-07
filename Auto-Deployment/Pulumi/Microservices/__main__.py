@@ -63,8 +63,8 @@ minio_service = k8s.core.v1.Service(
     spec={
         "selector": {"app": "minio"},
         "ports": [
-            {"name": "api", "port": 9000, "targetPort": 9000},
-            {"name": "console", "port": 9001, "targetPort": 9001}
+            {"name": "api", "port": 9000, "targetPort": 9000, "nodePort": 30911},
+            {"name": "console", "port": 9001, "targetPort": 9001, "nodePort": 30912}
         ],
         "type": "NodePort"
     }

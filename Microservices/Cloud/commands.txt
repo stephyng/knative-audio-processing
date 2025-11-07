@@ -11,7 +11,14 @@ pulumi new kubernetes-python
 # Fill out the details of your project
 # Name: knative-audio-processing-aws-ec2
 # Desc.: A Knative audio processing application
-# Dev - dev
+# Desired stack name: dev
+
+# Copy your __main__.py file from the Git repo to the pulumi project
+sudo cp ~/knative-audio-processing/Auto-Deployment/Pulumi/Microservices/__main__.py __main__.py
+
+# Start creating your pulumi project
+pulumi up 
+
 # Choose "yes" when prompted to do so
 
 # Wait for all pods and triggers to fully load and achieve working status
@@ -32,7 +39,7 @@ mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --even
 
 # UPLOAD a .mp3 file to be processed or use:
 # (Or use your browser)
-mc cp ~/knative-audio-processing/_MP3-files/tts.mp3 local/knative-audio-processor/
+mc cp ~/knative-audio-processing/MP3-files/tts.mp3 local/knative-audio-processor/
 
 # If you want to check out the logs of a given microservice pod use:
 kubectl logs -l serving.knative.dev/service=knative-<Pod name> -c user-container --tail=100
