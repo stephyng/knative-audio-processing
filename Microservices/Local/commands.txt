@@ -1,0 +1,9 @@
+# Clone the Git Repo to a directory. This should not be your working directory
+git clone https://github.com/stephyng/knative-audio-processing.git
+
+# Create a working directory in which you are going to deploy the bash script
+mkdir audio-processing
+cd audio-processing
+
+# Run the script from the Git repo
+...TODO
