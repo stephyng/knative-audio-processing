@@ -27,6 +27,7 @@ kubectl patch configmap/config-network -n knative-serving --type merge -p '{"dat
 kubectl patch configmap/config-domain -n knative-serving --type merge -p '{"data":{"127.0.0.1.sslip.io":""}}'
 echo "✅ Kourier beállítva."
 echo "---"
+sleep 5
 
 # -----------------------------
 kubectl apply -f ./Monolithic/Deployments/aws-k3s-service-autoscale-off.yaml
