@@ -4,6 +4,7 @@
 mkdir pulumi
 cd pulumi
 
+#Create a new Pulumi project
 pulumi new kubernetes-python
 
 # Paste your Pulumi Access Token or login in your browser to Pulumi

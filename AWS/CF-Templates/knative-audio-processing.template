@@ -937,6 +937,7 @@
                               "USER_NAME=\"ubuntu\"\n",
                               "USER_HOME=\"/home/$USER_NAME\"\n",
                               "echo \"export KUBECONFIG=/etc/rancher/k3s/k3s.yaml\" | sudo tee -a \"$USER_HOME/.bashrc\"\n",
+                              "echo \"export KUBECONFIG=/etc/rancher/k3s/k3s.yaml\" | sudo tee /etc/profile.d/k3s-kubeconfig.sh\n",
                               "sudo apt install python3.12-venv -y\n",
                               "kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-crds.yaml\n",
                               "kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml\n",
