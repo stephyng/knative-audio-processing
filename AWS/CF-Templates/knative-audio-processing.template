@@ -959,7 +959,9 @@
                               "wget https://dl.min.io/client/mc/release/linux-amd64/mc -O mc\n",
                               "sudo chmod +x mc\n",
                               "sudo mv mc /usr/local/bin/\n",
-                              "sudo ln -s /usr/local/bin/mc /usr/bin/mc\n"
+                              "sudo ln -s /usr/local/bin/mc /usr/bin/mc\n",
+                              "sudo chmod +x /home/ubuntu/knative-audio-processing/Auto-Deployment/Bash/Minio/minio-setup.sh\n",
+                              "sudo apt-get install htop\n"
                 ]]}}
              },
              "DependsOn": [

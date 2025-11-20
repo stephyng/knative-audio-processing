@@ -26,6 +26,9 @@ mc admin config set local notify_webhook:knative endpoint="http://knative-minio-
 mc admin service restart local
 mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
 
+# You can automate the process above with the use of a bash script
+./Auto-Deployment/Bash/Minio/minio-setup.sh
+
 # UPLOAD a .mp3 file to be processed or use:
 # (Or use your browser)
 mc cp ./MP3-files/tts.mp3 local/knative-audio-processor/
