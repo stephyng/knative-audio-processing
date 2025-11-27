@@ -6,8 +6,11 @@ git clone https://github.com/stephyng/knative-audio-processing.git
 # Change your directory
 cd knative-audio-processing/
 
-# Run the setup bash script to have your local environment ready
-./Auto-Deployment/Bash/Monolithic/knative-audio-processing-setup-MONOLITHIC.sh
+# Deploy the MinIO Service for your application
+kubectl apply -f ./Monolithic/NO-Knative/Minio/minio-deployment.yaml
+
+# Deploy your application
+kubectl apply -f ./Monolithic/NO-Knative/Deployments/audio-processor.yaml
 
 # Wait until app the necessary services have been deployed and the script has stopped running
 
@@ -22,7 +25,7 @@ mc alias set local http://127.0.0.1:9000 minioadmin minioadmin
 mc mb local/knative-audio-processor
 
 # Configure a service waiting for an upload to the MinIO Bucket
-mc admin config set local notify_webhook:knative endpoint="http://knative-audio-processor.default.svc.cluster.local/minio-event"
+mc admin config set local notify_webhook:knative endpoint="http://audio-processor.default.svc.cluster.local/minio-event"
 mc admin service restart local
 mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
 

@@ -50,7 +50,7 @@ def split_audio(input_file, output_dir="chunks", silence_thresh=-40, min_silence
         chunk_files.append((chunk_filename, start_ms, end_ms))
         print(f"Mentve: {chunk_filename}")
 
-    print(f"Kész: {len(chunk_files)} darab hangfájl létrehozva a(z) {output_dir} mappában.")
+    print(f"Created {len(chunk_files)} audio files in the '{output_dir}' folder.")
     return chunk_files
 
 def transcribe_chunks(chunk_files, output_srt="output.txt", model_size="base"):
@@ -68,9 +68,9 @@ def transcribe_chunks(chunk_files, output_srt="output.txt", model_size="base"):
             f.write(f"{start} --> {end}\n")
             f.write(f"{text}\n\n")
 
-            print(f"Felismerve: {chunk_filename} → {text}")
+            print(f"Recognized: {chunk_filename} → {text}")
 
-    print(f"Transzkripció kész: {output_srt}")
+    print(f"Transcription completed: {output_srt}")
 
 def merge_audios(input_files, output_file="merged.mp3"):
     if not input_files:
@@ -123,7 +123,7 @@ def process_audio():
 @app.route('/minio-event', methods=['POST'])
 def handle_minio_event():
     data = request.get_json()
-    print("MinIO esemény érkezett:", data, flush=True)
+    print("MinIO event received:", data, flush=True)
 
     try:
         records = data.get("Records", [])
@@ -134,7 +134,7 @@ def handle_minio_event():
             key = unquote(raw_key)
 
             if key.startswith(("results/", "locks/", "chunks/")) or key.endswith(("_merged.mp3", "_tts.txt")):
-                print(f"Ignorálva (saját fájl vagy eredmény): {key}", flush=True)
+                print(f"Ignored (own file or result): {key}", flush=True)
                 continue
 
             print(f"Bucket: {bucket}, Key: {key}", flush=True)
@@ -143,16 +143,16 @@ def handle_minio_event():
             print(f"Temp path: {temp_path}", flush=True)
 
             minio_client.fget_object(bucket, key, temp_path)
-            print(f"Fájl letöltve: {temp_path}", flush=True)
+            print(f"File downloaded: {temp_path}", flush=True)
 
             chunks = split_audio(temp_path, output_dir="chunks", silence_thresh=-40, min_silence_len=700)
-            print(f"{len(chunks)} darab chunk készült", flush=True)
+            print(f"Created {len(chunks)} chunks", flush=True)
 
             result_dir = f"results/{os.path.splitext(os.path.basename(key))[0]}/"
             for chunk_file, start_ms, end_ms in chunks:
                 remote_path = f"{result_dir}chunks/{os.path.basename(chunk_file)}"
                 minio_client.fput_object(bucket, remote_path, chunk_file)
-                print(f"Chunk feltöltve: {remote_path}", flush=True)
+                print(f"Chunk uploaded: {remote_path}", flush=True)
 
             transcribe_chunks(chunks, output_srt="tts.txt", model_size="tiny")
             files = [c[0] for c in chunks]
@@ -162,14 +162,14 @@ def handle_minio_event():
             minio_client.fput_object(bucket, f"{result_dir}merged.mp3", "merged.mp3")
             minio_client.fput_object(bucket, f"{result_dir}tts.txt", "tts.txt")
 
-            print(f"Eredmények feltöltve: {result_dir}", flush=True)
+            print(f"Results uploaded: {result_dir}", flush=True)
 
         return jsonify({"message": "Processing complete"}), 200
 
     except Exception as e:
         import traceback
         traceback.print_exc()
-        print("Hiba:", e, flush=True)
+        print("Error:", e, flush=True)
         return jsonify({"error": str(e)}), 500
 
 

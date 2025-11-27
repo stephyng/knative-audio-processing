@@ -1,0 +1,41 @@
+# Command list for the Monolithic Application (Local - Minikube)
+
+# Firt clone the Git Repo to a directory
+git clone https://github.com/stephyng/knative-audio-processing.git
+
+# Change your directory
+cd knative-audio-processing/
+
+# Run the setup bash script to have your local environment ready
+./Auto-Deployment/Bash/Monolithic/knative-audio-processing-setup-MONOLITHIC.sh
+
+# Wait until app the necessary services have been deployed and the script has stopped running
+
+# In your current terminal begin port forwarding
+kubectl port-forward -n minio svc/minio 9000:9000
+
+# Open another terminal and from this point on, work from there
+# Login to the MinIO Client from your console
+mc alias set local http://127.0.0.1:9000 minioadmin minioadmin
+
+# Create your bucket
+mc mb local/knative-audio-processor
+
+# Configure a service waiting for an upload to the MinIO Bucket
+mc admin config set local notify_webhook:knative endpoint="http://knative-audio-processor.default.svc.cluster.local/minio-event"
+mc admin config set local notify_webhook:knative endpoint="http://audio-processor.default.svc.cluster.local/minio-event"
+mc admin service restart local
+mc event add local/knative-audio-processor arn:minio:sqs::knative:webhook --event put
+
+# You can automate the process above with the use of a bash script
+./Auto-Deployment/Bash/Minio/minio-setup.sh
+
+# UPLOAD a .mp3 file to be processed or use:
+# (Or use your browser)
+mc cp ./MP3-files/tts.mp3 local/knative-audio-processor/
+
+# Check the output of the application
+mc ls local/knative-audio-processor/results/tts
+
+# If you want to check out the logs of a given microservice pod use:
+kubectl logs -l serving.knative.dev/service=knative-audio-processor -c user-container --tail=100
