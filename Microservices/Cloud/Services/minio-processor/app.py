@@ -23,7 +23,7 @@ def send_cloudevent(subject, data):
     broker_url = os.environ.get("K_SINK")
     
     if not broker_url:
-        print("Hiba: K_SINK környezeti változó nincs beállítva. A CloudEvent nem kerül elküldésre.", flush=True)
+        print("Error: K_SINK environment variable is not set. CloudEvent will not be sent.", flush=True)
         return
 
     headers = {
@@ -37,15 +37,15 @@ def send_cloudevent(subject, data):
     try:
         response = requests.post(broker_url, headers=headers, json=data)
         response.raise_for_status()
-        print(f"CloudEvent sikeresen elküldve a Broker-nek: {response.status_code}", flush=True)
+        print(f"CloudEvent sent successfully to Broker: {response.status_code}", flush=True)
     except requests.exceptions.RequestException as e:
-        print(f"Hiba történt a CloudEvent küldésekor: {e}", flush=True)
+        print(f"Error sending CloudEvent: {e}", flush=True)
     
 
 @app.route('/minio-event', methods=['POST'])
 def handle_minio_event():
     data = request.get_json()
-    print("MinIO esemény érkezett:", data, flush=True)
+    print("MinIO Event received:", data, flush=True)
 
     try:
         records = data.get("Records", [])
@@ -56,7 +56,7 @@ def handle_minio_event():
             key = unquote(raw_key)
 
             if key.startswith(("results/", "locks/", "chunks/")) or key.endswith(("_merged.mp3", "_tts.txt")):
-                print(f"Ignorálva (saját fájl vagy eredmény): {key}", flush=True)
+                print(f"Ignored (own file or result): {key}", flush=True)
                 continue
 
             print(f"Bucket: {bucket}, Key: {key}", flush=True)
@@ -72,7 +72,7 @@ def handle_minio_event():
     except Exception as e:
         import traceback
         traceback.print_exc()
-        print("Hiba:", e, flush=True)
+        print("Error:", e, flush=True)
         return jsonify({"error": str(e)}), 500
 
 
